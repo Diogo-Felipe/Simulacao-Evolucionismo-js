@@ -11,10 +11,13 @@ class Individuo {
         this.raioDeVisao = raioDeVisao;
         this.posicaoX = posicaoX;
         this.posicaoY = posicaoY;
+
+        this.achouComida = false;
+        this.comidaBuscada;
     }
 
     getQtdComida(){
-        return this.comida;
+        return this.comidaConsumida;
     }
 
     getEnergiaAtual(){
@@ -42,52 +45,69 @@ class Individuo {
         };
     }
 
-    procuraComida(listaComidas){
+    iniciarDia(listaComidas){
+
+        if(this.achouComida == true){
+            this.segueComida(this.comidaBuscada);
+        } else {
+            let versorX = Math.floor((Math.random() * 3) - 1);
+            let versorY = Math.floor((Math.random() * 3) - 1);
+    
+            this.move(versorX, versorY);
+
+            this.procuraComida(listaComidas);
+        }
+    }
+
+    segueComida(comida){
         let versorX, versorY;
 
-        listaComidas.forEach(comida => {
-            if(comida.estahDisponivel()){
-                let vetorDirecaoX = comida.getPosicao().x - this.posicaoX;
-                let vetorDirecaoY = comida.getPosicao().y - this.posicaoY;
-    
-                if(this.getDistanciaComida(vetorDirecaoX, vetorDirecaoY) == 0 && this.comidaConsumida < 2){
-
-                    this.come(comida);
-
-                } else if(this.getDistanciaComida(vetorDirecaoX, vetorDirecaoY) < this.raioDeVisao){
-                    
-                    if(this.comidaConsumida < 2){
-                        if(vetorDirecaoX > 0){
-                            versorX = 1;
-                        } else if(vetorDirecaoX < 0) {
-                            versorX = -1;
-                        } else {
-                            versorX = 0;
-                        }
+        let vetorDirecaoX = comida.getPosicao().x - this.posicaoX;
+        let vetorDirecaoY = comida.getPosicao().y - this.posicaoY;
         
-                        if(vetorDirecaoY > 0){
-                            versorY = 1;
-                        } else if(vetorDirecaoY < 0) {
-                            versorY = -1;
-                        } else {
-                            versorY = 0;
-                        }
-                        
-                        this.move(versorX, versorY);
+        if(vetorDirecaoX > 0){
+            versorX = 1;
+        } else if(vetorDirecaoX < 0) {
+            versorX = -1;
+        } else {
+            versorX = 0;
+        }
+
+        if(vetorDirecaoY > 0){
+            versorY = 1;
+        } else if(vetorDirecaoY < 0) {
+            versorY = -1;
+        } else {
+            versorY = 0;
+        }
+        
+        this.move(versorX, versorY);
+
+        if(this.getDistanciaComida(vetorDirecaoX, vetorDirecaoY) == 0 &&
+            this.comidaConsumida < 2 && comida.estahDisponivel()){
+
+            this.come(comida);
+
+        }
+
+        return;
+    }
+
+    procuraComida(listaComidas){
+        listaComidas.forEach(comida => {
+            let vetorDirecaoX = comida.getPosicao().x - this.posicaoX;
+            let vetorDirecaoY = comida.getPosicao().y - this.posicaoY;
+
+            if(comida.estahDisponivel()){                
+                if(this.getDistanciaComida(vetorDirecaoX, vetorDirecaoY) < this.raioDeVisao &&
+                    this.comidaConsumida < 2 &&
+                    this.achouComida == false){
+                        this.comidaBuscada = comida;
+                        this.achouComida = true;
                         return;
-                    } else {
-                        this.moveCasa();
-                        this.energiaAtual = 0;
-                        return;
-                    }
                 }
             }
         });
-
-        versorX = Math.floor((Math.random() * 3) - 1);
-        versorY = Math.floor((Math.random() * 3) - 1);
-
-        this.move(versorX, versorY);
     }
 
     move(direcaoX, direcaoY){
@@ -106,6 +126,8 @@ class Individuo {
     come(comida){
         this.comidaConsumida++;
         comida.consumir();
+        this.achouComida = false;
+        this.comidaBuscada = null;
     }
 
     getDistanciaComida(vetorDirecaoX, vetorDirecaoY){
@@ -136,8 +158,16 @@ class Individuo {
             if(caracteristica - 1 > 0){
                 return caracteristica - 1;
             }
+            return caracteristica;
         } else {
             return caracteristica;
         }
+    }
+
+    reseta(){
+        this.comidaConsumida = 0;
+        this.energiaAtual = this.energiaMax;
+        this.achouComida = false;
+        this.comidaBuscada = null;
     }
 }
