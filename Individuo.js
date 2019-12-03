@@ -1,7 +1,7 @@
 
 class Individuo {
     constructor(energia, velocidade, tamanho, raioDeVisao, posicaoX, posicaoY) {
-        this.comida = 0;
+        this.comidaConsumida = 0;
 
         this.energiaMax = energia; 
         this.energiaAtual = energia;
@@ -46,26 +46,41 @@ class Individuo {
         let versorX, versorY;
 
         listaComidas.forEach(comida => {
-            vetorDirecaoX = comida.getPosicao().x - this.posicaoX;
-            vetorDirecaoY = comida.getPosicao().y - this.posicaoY;
+            if(comida.estahDisponivel()){
+                let vetorDirecaoX = comida.getPosicao().x - this.posicaoX;
+                let vetorDirecaoY = comida.getPosicao().y - this.posicaoY;
+    
+                if(this.getDistanciaComida(vetorDirecaoX, vetorDirecaoY) == 0 && this.comidaConsumida < 2){
 
-            if(Math.sqrt(Math.pow(vetorDirecaoX, 2) + Math.pow(vetorDirecaoY, 2)) 
-                < this.raioDeVisao){
-            
-                if(vetorDirecaoX > 0){
-                    versorX = 1;
-                } else {
-                    versorX = -1;
+                    this.come(comida);
+
+                } else if(this.getDistanciaComida(vetorDirecaoX, vetorDirecaoY) < this.raioDeVisao){
+                    
+                    if(this.comidaConsumida < 2){
+                        if(vetorDirecaoX > 0){
+                            versorX = 1;
+                        } else if(vetorDirecaoX < 0) {
+                            versorX = -1;
+                        } else {
+                            versorX = 0;
+                        }
+        
+                        if(vetorDirecaoY > 0){
+                            versorY = 1;
+                        } else if(vetorDirecaoY < 0) {
+                            versorY = -1;
+                        } else {
+                            versorY = 0;
+                        }
+                        
+                        this.move(versorX, versorY);
+                        return;
+                    } else {
+                        this.moveCasa();
+                        this.energiaAtual = 0;
+                        return;
+                    }
                 }
-
-                if(vetorDirecaoY > 0){
-                    versorY = 1;
-                } else {
-                    versorY = -1;
-                }
-
-                this.move(versorX, versorY);
-                return;
             }
         });
 
@@ -76,12 +91,25 @@ class Individuo {
     }
 
     move(direcaoX, direcaoY){
-        if(this.energia > 0){
+        if(this.energiaAtual > 0){
             this.posicaoX = this.posicaoX + direcaoX * this.velocidade; 
             this.posicaoY = this.posicaoY + direcaoY * this.velocidade;
     
             this.perdeEnergia();
         }
+    }
+
+    moveCasa(){
+        console.log("INDO PARA CASA POR IMPLEMENTAR");
+    }
+    
+    come(comida){
+        this.comidaConsumida++;
+        comida.consumir();
+    }
+
+    getDistanciaComida(vetorDirecaoX, vetorDirecaoY){
+        return Math.sqrt(Math.pow(vetorDirecaoX, 2) + Math.pow(vetorDirecaoY, 2));
     }
     
     perdeEnergia(){
@@ -89,7 +117,7 @@ class Individuo {
     }
 
     ganhaEnergia(acressimoEnergia){
-        this.energiaAtual = this.energiaAtual - acressimoEnergia;
+        this.energiaAtual = this.energiaAtual + acressimoEnergia;
     }
 
     reproduz(listaIndividuos){
@@ -113,15 +141,3 @@ class Individuo {
         }
     }
 }
-
-var listaIndividuos = [];
-listaIndividuos.push(new Individuo(500, 1, 10, 10, 0, 0));
-
-listaIndividuos[0].reproduz(listaIndividuos);
-console.log(listaIndividuos[1].getVelocidade());
-
-console.log(listaIndividuos[0].getEnergiaAtual());
-console.log(listaIndividuos[0].getPosicao());
-listaIndividuos[0].move(1,1);
-console.log(listaIndividuos[0].getEnergiaAtual());
-console.log(listaIndividuos[0].getPosicao());
