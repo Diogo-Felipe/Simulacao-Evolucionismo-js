@@ -21,4 +21,10 @@ class Comida {
     consumir(){
         this.disponivel = false;
     }
+
+    reseta(){
+        this.disponivel = true;
+        this.posicaoX = Math.floor(Math.random() * 100);
+        this.posicaoY = Math.floor(Math.random() * 100);
+    }
 }
