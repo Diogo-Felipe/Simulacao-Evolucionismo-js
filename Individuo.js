@@ -14,6 +14,12 @@ class Individuo {
 
         this.achouComida = false;
         this.comidaBuscada;
+
+        this.possuiCaminhoBusca = false;
+        this.direcaoBuscaX;
+        this.direcaoBuscaY;
+
+        this.chanceDeMutacao = 5;
     }
 
     getQtdComida(){
@@ -50,11 +56,11 @@ class Individuo {
         if(this.achouComida == true){
             this.segueComida(this.comidaBuscada);
         } else {
-            let versorX = Math.floor((Math.random() * 3) - 1);
-            let versorY = Math.floor((Math.random() * 3) - 1);
-    
-            this.move(versorX, versorY);
-
+            if(this.possuiCaminhoBusca){
+                this.segueDiracaoBusca()
+            } else {
+                this.setaDireacaoBusca();
+            }
             this.procuraComida(listaComidas);
         }
     }
@@ -83,7 +89,7 @@ class Individuo {
         
         this.move(versorX, versorY);
 
-        if(this.getDistanciaComida(vetorDirecaoX, vetorDirecaoY) == 0 &&
+        if(this.getDistancia(vetorDirecaoX, vetorDirecaoY) <= ( 0 + this.velocidade) &&
             this.comidaConsumida < 2 && comida.estahDisponivel()){
 
             this.come(comida);
@@ -99,7 +105,7 @@ class Individuo {
             let vetorDirecaoY = comida.getPosicao().y - this.posicaoY;
 
             if(comida.estahDisponivel()){                
-                if(this.getDistanciaComida(vetorDirecaoX, vetorDirecaoY) < this.raioDeVisao &&
+                if(this.getDistancia(vetorDirecaoX, vetorDirecaoY) < this.raioDeVisao &&
                     this.comidaConsumida < 2 &&
                     this.achouComida == false){
                         this.comidaBuscada = comida;
@@ -108,6 +114,44 @@ class Individuo {
                 }
             }
         });
+    }
+
+    segueDiracaoBusca(){
+        let versorX, versorY;
+
+        let vetorDirecaoBuscaX = this.direcaoBuscaX - this.posicaoX;
+        let vetorDirecaoBuscaY = this.direcaoBuscaX - this.posicaoY;
+        
+        if(vetorDirecaoBuscaX > 0){
+            versorX = 1;
+        } else if(vetorDirecaoBuscaX < 0) {
+            versorX = -1;
+        } else {
+            versorX = 0;
+        }
+
+        if(vetorDirecaoBuscaY > 0){
+            versorY = 1;
+        } else if(vetorDirecaoBuscaY < 0) {
+            versorY = -1;
+        } else {
+            versorY = 0;
+        }
+        
+        this.move(versorX, versorY);
+
+        if(this.getDistancia(vetorDirecaoBuscaX, vetorDirecaoBuscaY) == 0){
+            this.possuiCaminhoBusca = false;
+        }
+    }
+
+    setaDireacaoBusca(){
+        this.direcaoBuscaX = Math.floor(Math.random() * 100);
+        this.direcaoBuscaY = Math.floor(Math.random() * 100);
+
+        this.possuiCaminhoBusca = true;
+
+        this.segueDiracaoBusca();
     }
 
     move(direcaoX, direcaoY){
@@ -130,7 +174,7 @@ class Individuo {
         this.comidaBuscada = null;
     }
 
-    getDistanciaComida(vetorDirecaoX, vetorDirecaoY){
+    getDistancia(vetorDirecaoX, vetorDirecaoY){
         return Math.sqrt(Math.pow(vetorDirecaoX, 2) + Math.pow(vetorDirecaoY, 2));
     }
     
@@ -144,7 +188,7 @@ class Individuo {
 
     reproduz(listaIndividuos){
         
-        this.velocidade = this.geraMutacao(5, this.velocidade)
+        this.velocidade = this.geraMutacao(this.chanceDeMutacao, this.velocidade)
 
         listaIndividuos.push(new Individuo(this.energiaMax, this.velocidade, this.tamanho, this.raioDeVisao, this.posicaoX, this.posicaoY));
     }
