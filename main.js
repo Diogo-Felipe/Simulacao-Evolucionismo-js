@@ -1,7 +1,7 @@
 var listaIndividuos = [];
 var listaComida = [];
 const energiaBase = 500;
-const numeroDeDiasSimulados = 10;
+const numeroDeDiasSimulados = 100;
 
 listaComida = geraComida(100);
 listaIndividuos = geraPopulacao(20, energiaBase);
@@ -10,7 +10,7 @@ imprimeDadosPopulacao(listaIndividuos, -1);
 
 for(let i = 0; i < numeroDeDiasSimulados; i++){
     populacaoProcuraComida(energiaBase, listaIndividuos, listaComida);
-    fimDoDia(listaIndividuos, listaComida, i);
+    listaIndividuos = fimDoDia(listaIndividuos, listaComida, i);
 }
 
 function geraComida(quantidade){
@@ -44,20 +44,26 @@ function populacaoProcuraComida(energiaBase, listaIndividuos, listaComida){
 }
 
 function fimDoDia(listaIndividuos, listaComida, dia){
-    triagemDaPopulacao(listaIndividuos);
+    listaIndividuos = triagemDaPopulacao(listaIndividuos);
     imprimeDadosPopulacao(listaIndividuos, dia);
     resetaPoupulacao(listaIndividuos)
     resetaComidas(listaComida);
+
+    return listaIndividuos;
 }
 
 function triagemDaPopulacao(listaIndividuos){
-    for(let i = 0; i < listaIndividuos.length; i++){
-        if(listaIndividuos[i].getQtdComida() == 2){
-            listaIndividuos[i].reproduz(listaIndividuos);
-        } else if (listaIndividuos[i].getQtdComida() == 0) {
-            listaIndividuos.splice( i, 1 );
-        }
-    }    
+    let novaLista = listaIndividuos.filter(individuo => {
+        return individuo.getQtdComida() > 0;
+    });
+
+    for(let i = 0; i < novaLista.length; i++){
+        if(novaLista[i].getQtdComida() == 2){
+            novaLista[i].reproduz(novaLista);
+        } 
+    }
+
+    return novaLista;
 }
 
 function resetaComidas(listaComida){
@@ -77,6 +83,19 @@ function imprimeDadosPopulacao(listaIndividuos, dia){
     let somaVelocidade = 0;
     let mediaVelocidade;
     let qtdComidaConsumida = 0;
+    let velocidade = [];
+
+    for(let i = 0; i < 12; i++){
+        velocidade[i] = 0;
+    }
+
+    listaIndividuos.forEach(individuo => {
+        for(let i = 0; i < 12; i++){
+            if(individuo.getVelocidade() == i){
+                velocidade[i]++;
+            }
+        }
+    });
 
     console.log("_________________________________________________")
     console.log("Numero de Individuos: " + listaIndividuos.length);
@@ -89,5 +108,9 @@ function imprimeDadosPopulacao(listaIndividuos, dia){
     mediaVelocidade = somaVelocidade / listaIndividuos.length;
 
     console.log("Media da Velocidade da Populacao no dia " + (dia + 1) + " :" + mediaVelocidade);
-    console.log("Qtd de comida consumida da Populacao no dia " + (dia + 1) + " :" + qtdComidaConsumida);    
+    console.log("Qtd de comida consumida da Populacao no dia " + (dia + 1) + " :" + qtdComidaConsumida); 
+
+    // for(let i = 0; i < velocidade.length; i++){
+    //     console.log("Qtd de individuos com velocidade: " + (i) + ": " + velocidade[i]);
+    // }
 }
