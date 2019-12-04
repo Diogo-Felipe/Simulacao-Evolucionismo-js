@@ -1,7 +1,10 @@
 var listaIndividuos = [];
 var listaComida = [];
+
+let mediaPorGerracao = [];
+
 const energiaBase = 500;
-const numeroDeDiasSimulados = 100;
+const numeroDeDiasSimulados = 1000;
 
 listaComida = geraComida(100);
 listaIndividuos = geraPopulacao(20, energiaBase);
@@ -11,6 +14,23 @@ imprimeDadosPopulacao(listaIndividuos, -1);
 for(let i = 0; i < numeroDeDiasSimulados; i++){
     populacaoProcuraComida(energiaBase, listaIndividuos, listaComida);
     listaIndividuos = fimDoDia(listaIndividuos, listaComida, i);
+}
+
+saidaDeDados();
+
+function saidaDeDados(){
+    var csv = 'Velocidade\n';
+        
+    mediaPorGerracao.forEach(media => {
+        csv += media;
+        csv += '\n';
+    });
+
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'velocidades.txt';
+    hiddenElement.click();
 }
 
 function geraComida(quantidade){
@@ -107,8 +127,10 @@ function imprimeDadosPopulacao(listaIndividuos, dia){
 
     mediaVelocidade = somaVelocidade / listaIndividuos.length;
 
+    mediaPorGerracao.push(mediaVelocidade);
+
     console.log("Media da Velocidade da Populacao no dia " + (dia + 1) + " :" + mediaVelocidade);
-    console.log("Qtd de comida consumida da Populacao no dia " + (dia + 1) + " :" + qtdComidaConsumida); 
+    //console.log("Qtd de comida consumida da Populacao no dia " + (dia + 1) + " :" + qtdComidaConsumida); 
 
     // for(let i = 0; i < velocidade.length; i++){
     //     console.log("Qtd de individuos com velocidade: " + (i) + ": " + velocidade[i]);
