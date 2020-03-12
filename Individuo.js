@@ -149,7 +149,8 @@ class Individuo {
 
         if(this.getDistancia(vetorDirecaoX, vetorDirecaoY) <= ( 0 + this.velocidade) &&
             this.comidaConsumida < 2 && comida.estahDisponivel()){
-
+            
+            this.move(versorX, versorY);
             this.come(comida);
 
         }

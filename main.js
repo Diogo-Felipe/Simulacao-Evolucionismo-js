@@ -24,7 +24,7 @@ let processadorDeSaida = new ProcessadorDeSaida();
 let simulador = new Simulacao(numeroDeDiasSimulados, energiaBase, qtdInicialDeIndividuos, qtdDeComida, listaIndividuos, listaComida, processadorDeSaida);
 
 /** Inicia a simulacao */
-simulador.simula(numeroDeDiasSimulados, energiaBase, qtdInicialDeIndividuos, qtdDeComida)
+simulador.simula(numeroDeDiasSimulados, energiaBase, qtdInicialDeIndividuos, qtdDeComida);
 
 /** Gera arquivo com a saida de dados do simulador */
-processadorDeSaida.geraArquivoDeDados(simulador.getMediaPorGeracao());
+//processadorDeSaida.geraArquivoDeDados(simulador.getMediaPorGeracao());
