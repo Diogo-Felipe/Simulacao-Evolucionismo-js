@@ -18,6 +18,8 @@ class Comida {
 
         /** @private */
         this.posicaoY = posicaoY;
+
+        this.imagem = render.geraImagemComida(this.posicaoX, this.posicaoY);
     }
 
     /**
@@ -53,5 +55,7 @@ class Comida {
         this.disponivel = true;
         this.posicaoX = Math.floor(Math.random() * 100);
         this.posicaoY = Math.floor(Math.random() * 100);
+
+        render.renderizaElemento(this.imagem, this.posicaoX, this.posicaoY);
     }
 }
