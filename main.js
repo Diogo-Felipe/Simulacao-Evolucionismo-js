@@ -11,7 +11,7 @@ var listaComida = [];
 /** @const {number} */
 const energiaBase = 500;
 /** @const {number} */
-const numeroDeDiasSimulados = 1000;
+const numeroDeDiasSimulados = 100;
 /** @const {number} */
 const qtdInicialDeIndividuos = 20;
 /** @const {number} */
@@ -19,6 +19,8 @@ const qtdDeComida = 100;
 
 /** @type {Object} */
 let processadorDeSaida = new ProcessadorDeSaida();
+
+let render = new Render();
 
 /** @type {Object} */
 let simulador = new Simulacao(numeroDeDiasSimulados, energiaBase, qtdInicialDeIndividuos, qtdDeComida, listaIndividuos, listaComida, processadorDeSaida);
