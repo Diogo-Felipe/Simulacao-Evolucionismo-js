@@ -1,0 +1,28 @@
+body{
+    margin: 0;
+}
+
+.campo-de-simulacao{
+    width: 600px;
+    height: 600px;
+
+    background-color: chartreuse;
+}
+
+.individuo{
+    position: absolute;
+
+    height: 3px;
+    width: 3px;
+
+    background-color: black;
+}
+
+.comida{
+    position: absolute;
+
+    height: 2px;
+    width: 2px;
+
+    background-color: aliceblue;
+}
