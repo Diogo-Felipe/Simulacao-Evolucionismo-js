@@ -98,8 +98,8 @@ class Simulacao{
      */
     populacaoProcuraComida(listaIndividuos, listaComida){
         for(let i = 0; i < this.energiaBase; i++){
-            for(let i = 0; i < listaIndividuos.length; i++){
-                listaIndividuos[i].iniciarDia(listaComida);
+            for(let j = 0; j < listaIndividuos.length; j++){
+                listaIndividuos[j].iniciarDia(listaComida); 
             }
         }
     }
@@ -129,6 +129,12 @@ class Simulacao{
      * @returns {Object[]} Lista de individuos atualizada com mortes e reproducoes
      */
     triagemDaPopulacao(listaIndividuos){
+        listaIndividuos.forEach( ( individuo, indice ) => {
+            if(individuo.getQtdComida() <= 0){
+                render.removeElemento(individuo.imagem);
+            }
+        });
+
         let novaLista = listaIndividuos.filter(individuo => {
             return individuo.getQtdComida() > 0;
         });
