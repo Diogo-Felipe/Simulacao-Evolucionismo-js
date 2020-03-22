@@ -23,12 +23,13 @@ let processadorDeSaida = new ProcessadorDeSaida();
 /** @type {Object} */
 let simulador = new Simulacao(numeroDeDiasSimulados, energiaBase, qtdInicialDeIndividuos, qtdDeComida, listaIndividuos, listaComida, processadorDeSaida);
 
-let plotter2D = new Plotter2D(numeroDeDiasSimulados, 20);
+let plotter2D = new Plotter2D(numeroDeDiasSimulados, qtdInicialDeIndividuos + 10);
 
 /** Inicia a simulacao */
 simulador.simula(numeroDeDiasSimulados, energiaBase, qtdInicialDeIndividuos, qtdDeComida);
 
-plotter2D.plotarGrafico(simulador.getMediaPorGeracao());
+plotter2D.plotarGrafico(simulador.getMediaPorGeracao(), "black", "Media de Velocidade");
+plotter2D.plotarGrafico(simulador.getTotalIndividuosPorGeracao(), "red", "Qtd de Individuos");
 
 /** Gera arquivo com a saida de dados do simulador */
 //processadorDeSaida.geraArquivoDeDados(simulador.getMediaPorGeracao());
