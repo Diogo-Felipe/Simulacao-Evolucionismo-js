@@ -28,7 +28,7 @@ class ProcessadorDeSaida{
      * @param {Object[]} listaIndividuos - Lista de individuos vivos
      * @param {number} dia - Dia atual da simulacao
      */
-    imprimeDadosPopulacao(mediaDeVelocidadePorGerracao, listaIndividuos, dia){
+    imprimeDadosPopulacao(mediaDeVelocidadePorGerracao, totalIndividuosPorGeracao, listaIndividuos, dia){
         let somaVelocidade = 0;
         let mediaVelocidade;
         let qtdComidaConsumida = 0;
@@ -57,6 +57,7 @@ class ProcessadorDeSaida{
         mediaVelocidade = somaVelocidade / listaIndividuos.length;
     
         mediaDeVelocidadePorGerracao.push(mediaVelocidade);
+        totalIndividuosPorGeracao.push(listaIndividuos.length);
     
         console.log("Media da Velocidade da Populacao no dia " + (dia + 1) + " :" + mediaVelocidade);
         //console.log("Qtd de comida consumida da Populacao no dia " + (dia + 1) + " :" + qtdComidaConsumida); 
