@@ -41,7 +41,23 @@ class Plotter2D{
         this.plotArea.appendChild(ponto);
     }
 
-    plotarGrafico(vetorDeValores, cor){
+    plotarGrafico(vetorDeValores, cor, texto){
+        let espacoLegenda = document.querySelector(".legenda-area");
+        let legenda = document.createElement("div");
+        legenda.classList.add("legenda");
+
+        let ponto = document.createElement("div");
+        ponto.classList.add("ponto");
+        ponto.style.backgroundColor = cor;
+
+        let legendaTexto = document.createElement("p");
+        legendaTexto.innerText = texto;
+
+        legenda.appendChild(ponto);
+        legenda.appendChild(legendaTexto);
+        espacoLegenda.appendChild(legenda);
+
+
         for (let i = 1; i <= vetorDeValores.length; i++) {
             this.plotarPonto(i, vetorDeValores[i-1], cor);            
         }
