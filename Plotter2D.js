@@ -31,18 +31,19 @@ class Plotter2D{
         }
     }
 
-    plotarPonto(xPonto, yPonto){
+    plotarPonto(xPonto, yPonto, cor){
         let ponto = document.createElement("div");
         ponto.classList.add("ponto");
         ponto.style.left = xPonto * this.escalaX + "px";
         ponto.style.top = ( this.redutorY - yPonto ) * this.escalaY + "px";
+        ponto.style.backgroundColor = cor;
 
         this.plotArea.appendChild(ponto);
     }
 
-    plotarGrafico(vetorDeValores){
+    plotarGrafico(vetorDeValores, cor){
         for (let i = 1; i <= vetorDeValores.length; i++) {
-            this.plotarPonto(i, vetorDeValores[i-1]);            
+            this.plotarPonto(i, vetorDeValores[i-1], cor);            
         }
     }
 }
