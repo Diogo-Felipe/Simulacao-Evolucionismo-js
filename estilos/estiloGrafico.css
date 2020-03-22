@@ -25,3 +25,25 @@ body{
     position: absolute;
     font-size: 10px;
 }
+
+.legenda-area{
+    position: absolute;
+    top: 30px;
+    right: 0px;
+
+    width: 154px;
+
+    border: 2px solid black;
+}
+
+.legenda{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 2px;
+}
+
+.legenda p{
+    margin-left: 10px;
+}
