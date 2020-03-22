@@ -34,6 +34,8 @@ class Simulacao{
 
         /** @private */
         this.mediaPorGeracao = [];
+
+        this.totalIndividuosPorGeracao = [];
     }
 
     /**
@@ -44,6 +46,10 @@ class Simulacao{
         return this.mediaPorGeracao;
     }
 
+    getTotalIndividuosPorGeracao(){
+        return this.totalIndividuosPorGeracao;
+    }
+
     /**
      * Metodo que realiza a simulacao baseado nos parametros de entrada
      */
@@ -51,11 +57,11 @@ class Simulacao{
         this.listaIndividuos = this.geraPopulacao(this.qtdInicialDeIndividuos, this.energiaBase);
         this.listaComida = this.geraComida(this.qtdDeComida);
 
-        this.processadorDeSaida.imprimeDadosPopulacao(this.mediaPorGeracao, this.listaIndividuos, -1);
+        this.processadorDeSaida.imprimeDadosPopulacao(this.mediaPorGeracao, this.totalIndividuosPorGeracao, this.listaIndividuos, -1);
         
         for(let i = 0; i < this.numeroDeDiasSimulados; i++){
             this.populacaoProcuraComida(this.listaIndividuos, this.listaComida);
-            this.listaIndividuos = this.fimDoDia(this.listaIndividuos, this.listaComida, i, this.processadorDeSaida, this.mediaPorGeracao);
+            this.listaIndividuos = this.fimDoDia(this.listaIndividuos, this.listaComida, i, this.processadorDeSaida, this.mediaPorGeracao, this.totalIndividuosPorGeracao);
         }
     }
     
@@ -113,9 +119,9 @@ class Simulacao{
      * @param {number[]} mediaPorGeracao Medias das velocidades por geracao
      * @returns {Object[]} Lista de individuos atualizada com mortes e reproducoes
      */
-    fimDoDia(listaIndividuos, listaComida, dia, processadorDeSaida, mediaPorGeracao){
+    fimDoDia(listaIndividuos, listaComida, dia, processadorDeSaida, mediaPorGeracao, totalIndividuosPorGeracao){
         listaIndividuos = this.triagemDaPopulacao(listaIndividuos);
-        processadorDeSaida.imprimeDadosPopulacao(mediaPorGeracao, listaIndividuos, dia);
+        processadorDeSaida.imprimeDadosPopulacao(mediaPorGeracao, totalIndividuosPorGeracao, listaIndividuos, dia);
         this.resetaPoupulacao(listaIndividuos)
         this.resetaComidas(listaComida);
     
