@@ -20,8 +20,6 @@ const qtdDeComida = 100;
 /** @type {Object} */
 let processadorDeSaida = new ProcessadorDeSaida();
 
-let render = new Render();
-
 /** @type {Object} */
 let simulador = new Simulacao(numeroDeDiasSimulados, energiaBase, qtdInicialDeIndividuos, qtdDeComida, listaIndividuos, listaComida, processadorDeSaida);
 

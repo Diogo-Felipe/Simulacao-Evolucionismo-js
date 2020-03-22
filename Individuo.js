@@ -47,7 +47,6 @@ class Individuo {
         /** @private */
         this.chanceDeMutacao = 5;
 
-        this.imagem = render.geraImagemIndividuo(this.posicaoX, this.posicaoY);
     }
 
     /**
@@ -233,8 +232,6 @@ class Individuo {
         if(this.energiaAtual > 0){
             this.posicaoX = this.posicaoX + direcaoX * this.velocidade; 
             this.posicaoY = this.posicaoY + direcaoY * this.velocidade;
-
-            render.renderizaElemento(this.imagem, this.posicaoX, this.posicaoY);
     
             this.perdeEnergia();
         }
